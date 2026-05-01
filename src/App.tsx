@@ -160,14 +160,20 @@ export default function App() {
   }, []);
 
   const scrollToSection = (href: string) => {
-    const target = document.querySelector(href);
-
-    if (target) {
-      const y = target.getBoundingClientRect().top + window.scrollY - 76;
-      window.scrollTo({ top: y, behavior: "smooth" });
-    }
-
     setIsMenuOpen(false);
+
+    setTimeout(() => {
+      const target = document.querySelector(href);
+
+      if (target) {
+        const y = target.getBoundingClientRect().top + window.scrollY - 90;
+
+        window.scrollTo({
+          top: y,
+          behavior: "smooth",
+        });
+      }
+    }, 120);
   };
 
   const openGoogleForm = () => {
@@ -176,7 +182,7 @@ export default function App() {
   };
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#050505] text-white selection:bg-rose-700 selection:text-white">
+    <main className="min-h-screen overflow-x-hidden bg-[#050505] pb-24 text-white selection:bg-rose-700 selection:text-white md:pb-0">
       <nav
         className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${
           scrolled
@@ -186,6 +192,7 @@ export default function App() {
       >
         <div className="mx-auto flex h-20 max-w-6xl items-center justify-between px-5 md:px-6">
           <button
+            type="button"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             className="flex items-center gap-3 text-left"
             aria-label="Go to homepage"
@@ -207,6 +214,7 @@ export default function App() {
           <div className="hidden items-center gap-8 md:flex">
             {navLinks.map((link) => (
               <button
+                type="button"
                 key={link.href}
                 onClick={() => scrollToSection(link.href)}
                 className={`nav-link text-sm font-medium transition ${
@@ -222,6 +230,7 @@ export default function App() {
 
           <div className="flex items-center gap-3">
             <button
+              type="button"
               onClick={openGoogleForm}
               className="hidden rounded-full bg-rose-700 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-rose-950/30 transition hover:bg-rose-600 md:inline-flex"
             >
@@ -229,6 +238,7 @@ export default function App() {
             </button>
 
             <button
+              type="button"
               onClick={() => setIsMenuOpen((value) => !value)}
               className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 md:hidden"
               aria-label="Toggle menu"
@@ -245,25 +255,28 @@ export default function App() {
         <AnimatePresence>
           {isMenuOpen && (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="border-t border-white/10 bg-black/95 px-5 py-5 md:hidden"
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.18 }}
+              className="fixed left-0 right-0 top-20 z-[60] border-t border-white/10 bg-black px-5 py-5 shadow-2xl md:hidden"
             >
               <div className="flex flex-col gap-2">
                 {navLinks.map((link) => (
                   <button
+                    type="button"
                     key={link.href}
                     onClick={() => scrollToSection(link.href)}
-                    className="rounded-2xl px-4 py-3 text-left text-white/70 hover:bg-white/5 hover:text-white"
+                    className="w-full rounded-2xl px-4 py-4 text-left text-base font-semibold text-white/80 active:bg-white/10"
                   >
                     {link.label}
                   </button>
                 ))}
 
                 <button
+                  type="button"
                   onClick={openGoogleForm}
-                  className="mt-2 rounded-2xl bg-rose-700 px-4 py-3 font-bold hover:bg-rose-600"
+                  className="mt-2 w-full rounded-2xl bg-rose-700 px-4 py-4 text-base font-bold text-white active:bg-rose-800"
                 >
                   Fill Google Form
                 </button>
@@ -304,6 +317,7 @@ export default function App() {
 
             <div className="mt-10 flex flex-col gap-3 sm:flex-row">
               <button
+                type="button"
                 onClick={openGoogleForm}
                 className="inline-flex w-full items-center justify-center gap-3 rounded-full bg-white px-7 py-4 font-extrabold text-black transition hover:bg-rose-100 sm:w-auto"
               >
@@ -311,6 +325,7 @@ export default function App() {
               </button>
 
               <button
+                type="button"
                 onClick={() => scrollToSection("#eligibility")}
                 className="inline-flex w-full items-center justify-center rounded-full border border-white/10 px-7 py-4 font-bold text-white/80 transition hover:bg-white/5 hover:text-white sm:w-auto"
               >
@@ -513,6 +528,7 @@ export default function App() {
 
           <div className="mt-12 text-center">
             <button
+              type="button"
               onClick={openGoogleForm}
               className="inline-flex w-full items-center justify-center gap-3 rounded-full bg-rose-700 px-8 py-4 font-bold transition hover:bg-rose-600 sm:w-auto"
             >
@@ -571,6 +587,7 @@ export default function App() {
           </p>
 
           <button
+            type="button"
             onClick={openGoogleForm}
             className="mt-8 inline-flex w-full items-center justify-center gap-3 rounded-full bg-white px-8 py-4 font-black text-black transition hover:bg-rose-100 sm:w-auto"
           >
@@ -595,6 +612,16 @@ export default function App() {
           </p>
         </div>
       </footer>
+
+      <div className="fixed bottom-4 left-4 right-4 z-30 md:hidden">
+        <button
+          type="button"
+          onClick={openGoogleForm}
+          className="flex w-full items-center justify-center gap-2 rounded-full bg-rose-700 px-6 py-4 text-sm font-black text-white shadow-2xl shadow-rose-950/50 active:scale-[0.98]"
+        >
+          Fill Registration Form <ArrowRight className="h-4 w-4" />
+        </button>
+      </div>
     </main>
   );
 }
