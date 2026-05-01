@@ -190,7 +190,7 @@ export default function App() {
   };
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#050505] pb-24 text-white selection:bg-rose-700 selection:text-white md:pb-0">
+    <main className="min-h-screen overflow-x-hidden bg-[#050505] text-white selection:bg-rose-700 selection:text-white">
       <nav
         className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${
           scrolled
@@ -625,29 +625,19 @@ export default function App() {
         type="button"
         onClick={backToTop}
         aria-label="Back to top"
-        className="fixed bottom-6 right-6 z-30 hidden h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-zinc-950 text-xl font-black text-white shadow-2xl shadow-black/40 transition hover:bg-rose-700 md:flex"
+        className="fixed bottom-6 right-6 z-30 hidden h-12 w-12 items-center justify-center rounded-full border border-rose-500/30 bg-rose-700 text-xl font-black text-white shadow-2xl shadow-rose-950/50 transition hover:bg-rose-600 md:flex"
       >
         ↑
       </button>
 
-      <div className="fixed bottom-4 left-4 right-4 z-30 grid grid-cols-[1fr_auto] gap-3 md:hidden">
-        <button
-          type="button"
-          onClick={openGoogleForm}
-          className="flex w-full items-center justify-center gap-2 rounded-full bg-rose-700 px-6 py-4 text-sm font-black text-white shadow-2xl shadow-rose-950/50 active:scale-[0.98]"
-        >
-          Fill Registration Form <ArrowRight className="h-4 w-4" />
-        </button>
-
-        <button
-          type="button"
-          onClick={backToTop}
-          aria-label="Back to top"
-          className="flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-black text-lg font-black text-white shadow-2xl shadow-black/40 active:scale-[0.98]"
-        >
-          ↑
-        </button>
-      </div>
+      <button
+        type="button"
+        onClick={backToTop}
+        aria-label="Back to top"
+        className="fixed bottom-5 right-5 z-30 flex h-14 w-14 items-center justify-center rounded-full border border-rose-500/30 bg-rose-700 text-xl font-black text-white shadow-2xl shadow-rose-950/50 active:scale-[0.98] md:hidden"
+      >
+        ↑
+      </button>
     </main>
   );
 }
