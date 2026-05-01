@@ -285,18 +285,18 @@ export default function App() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-white/65">
-              <Heart className="h-4 w-4 text-rose-500" />
-              Initiated by Leo Club of Colombo City 306D5
+            <div className="mb-7 inline-flex max-w-full items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-white/65 sm:tracking-[0.2em]">
+              <Heart className="h-4 w-4 shrink-0 text-rose-500" />
+              <span>Initiated by Leo Club of Colombo City 306D5</span>
             </div>
 
-            <h1 className="gradient-text text-6xl font-black leading-[0.95] tracking-[-0.07em] md:text-8xl">
+            <h1 className="gradient-text text-[3.25rem] font-black leading-[0.95] tracking-[-0.07em] sm:text-6xl md:text-8xl">
               Save a life.
               <br />
               Let your pet be a hero.
             </h1>
 
-            <p className="mt-8 max-w-xl text-lg leading-8 text-white/60 md:text-xl">
+            <p className="mt-8 max-w-xl text-base leading-8 text-white/60 sm:text-lg md:text-xl">
               Paw Pulse LK is building a trusted network of healthy donor cats
               and dogs to support pets in urgent medical need. One form
               submission can help create a life-saving connection.
@@ -305,14 +305,14 @@ export default function App() {
             <div className="mt-10 flex flex-col gap-3 sm:flex-row">
               <button
                 onClick={openGoogleForm}
-                className="inline-flex items-center justify-center gap-3 rounded-full bg-white px-7 py-4 font-extrabold text-black transition hover:bg-rose-100"
+                className="inline-flex w-full items-center justify-center gap-3 rounded-full bg-white px-7 py-4 font-extrabold text-black transition hover:bg-rose-100 sm:w-auto"
               >
                 Fill Registration Form <ArrowRight className="h-4 w-4" />
               </button>
 
               <button
                 onClick={() => scrollToSection("#eligibility")}
-                className="inline-flex items-center justify-center rounded-full border border-white/10 px-7 py-4 font-bold text-white/80 transition hover:bg-white/5 hover:text-white"
+                className="inline-flex w-full items-center justify-center rounded-full border border-white/10 px-7 py-4 font-bold text-white/80 transition hover:bg-white/5 hover:text-white sm:w-auto"
               >
                 Check Eligibility
               </button>
@@ -323,28 +323,28 @@ export default function App() {
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="relative"
+            className="relative w-full"
           >
             <div className="glass-card rounded-[2rem] p-4 shadow-2xl shadow-rose-950/20">
               <div className="relative flex aspect-[4/3.2] items-center justify-center overflow-hidden rounded-[1.5rem] bg-gradient-to-br from-zinc-900 to-black">
                 <div className="absolute inset-0 bg-[radial-gradient(#ffffff_0.8px,transparent_1px)] bg-[length:18px_18px] opacity-[0.06]" />
 
-                <div className="relative text-center">
-                  <div className="mx-auto mb-5 flex h-28 w-28 items-center justify-center rounded-full bg-rose-900/30 ring-1 ring-rose-500/20">
-                    <PawPrint className="h-14 w-14 text-rose-500" />
+                <div className="relative px-4 text-center">
+                  <div className="mx-auto mb-5 flex h-24 w-24 items-center justify-center rounded-full bg-rose-900/30 ring-1 ring-rose-500/20 sm:h-28 sm:w-28">
+                    <PawPrint className="h-12 w-12 text-rose-500 sm:h-14 sm:w-14" />
                   </div>
 
-                  <p className="text-2xl font-black tracking-tight">
+                  <p className="text-xl font-black tracking-tight sm:text-2xl">
                     One pet. Multiple lives.
                   </p>
-                  <p className="mt-2 text-white/45">
+                  <p className="mt-2 text-sm text-white/45 sm:text-base">
                     A simple registration can create real impact.
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="absolute -bottom-6 left-2 rounded-3xl border border-white/10 bg-zinc-950 px-6 py-4 shadow-xl sm:-left-6">
+            <div className="mt-4 rounded-3xl border border-white/10 bg-zinc-950 px-6 py-4 text-left shadow-xl md:absolute md:-bottom-6 md:left-2 md:mt-0 sm:md:-left-6">
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/40">
                 Goal
               </p>
@@ -354,7 +354,7 @@ export default function App() {
               <p className="text-sm text-white/45">donor pets</p>
             </div>
 
-            <div className="absolute -right-2 -top-5 rounded-3xl border border-white/10 bg-zinc-950 px-6 py-4 text-right shadow-xl sm:-right-6">
+            <div className="mt-4 rounded-3xl border border-white/10 bg-zinc-950 px-6 py-4 text-left shadow-xl md:absolute md:-right-2 md:-top-5 md:mt-0 md:text-right sm:md:-right-6">
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/40">
                 Cost
               </p>
@@ -368,7 +368,7 @@ export default function App() {
       </section>
 
       <section className="border-y border-white/10 bg-black/40 px-5 py-12 md:px-6">
-        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 text-center md:grid-cols-4">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-4 text-center sm:grid-cols-2 md:grid-cols-4 md:gap-6">
           {[
             { value: 100, suffix: "%", label: "Free Registration" },
             { value: 4, suffix: "", label: "Simple Steps" },
@@ -400,7 +400,7 @@ export default function App() {
             </h2>
           </div>
 
-          <div className="space-y-6 text-lg leading-8 text-white/60">
+          <div className="space-y-6 text-base leading-8 text-white/60 sm:text-lg">
             <p>
               Cats and dogs may need blood during accidents, surgeries, severe
               illness, poisoning cases, or emergency treatment. In those
@@ -449,7 +449,7 @@ export default function App() {
               Is your pet ready to help?
             </h2>
 
-            <p className="mt-5 text-lg leading-8 text-white/60">
+            <p className="mt-5 text-base leading-8 text-white/60 sm:text-lg">
               These are general guidelines. Final eligibility should always be
               confirmed by veterinary professionals.
             </p>
@@ -514,7 +514,7 @@ export default function App() {
           <div className="mt-12 text-center">
             <button
               onClick={openGoogleForm}
-              className="inline-flex items-center gap-3 rounded-full bg-rose-700 px-8 py-4 font-bold transition hover:bg-rose-600"
+              className="inline-flex w-full items-center justify-center gap-3 rounded-full bg-rose-700 px-8 py-4 font-bold transition hover:bg-rose-600 sm:w-auto"
             >
               Register Through Google Form <ArrowRight className="h-4 w-4" />
             </button>
@@ -543,7 +543,7 @@ export default function App() {
                 key={faq.q}
                 className="group rounded-3xl border border-white/10 bg-black px-6 py-2"
               >
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-5 py-5 text-lg font-bold">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-5 py-5 text-base font-bold sm:text-lg">
                   {faq.q}
                   <span className="text-2xl text-rose-500 transition group-open:rotate-45">
                     +
@@ -558,21 +558,21 @@ export default function App() {
       </section>
 
       <section className="px-5 py-20 text-center md:px-6 md:py-28">
-        <div className="mx-auto max-w-3xl rounded-[2rem] border border-rose-500/20 bg-rose-950/20 p-8 md:p-12">
+        <div className="mx-auto max-w-3xl rounded-[2rem] border border-rose-500/20 bg-rose-950/20 p-6 sm:p-8 md:p-12">
           <PawPrint className="mx-auto h-12 w-12 text-rose-500" />
 
           <h2 className="mt-6 text-4xl font-black tracking-tight md:text-6xl">
             Ready to register your pet?
           </h2>
 
-          <p className="mx-auto mt-5 max-w-xl text-lg leading-8 text-white/60">
+          <p className="mx-auto mt-5 max-w-xl text-base leading-8 text-white/60 sm:text-lg">
             The form is quick, free, and helps us build a life-saving donor
             network for cats and dogs.
           </p>
 
           <button
             onClick={openGoogleForm}
-            className="mt-8 inline-flex items-center gap-3 rounded-full bg-white px-8 py-4 font-black text-black transition hover:bg-rose-100"
+            className="mt-8 inline-flex w-full items-center justify-center gap-3 rounded-full bg-white px-8 py-4 font-black text-black transition hover:bg-rose-100 sm:w-auto"
           >
             Fill Google Form <ArrowRight className="h-4 w-4" />
           </button>
@@ -580,7 +580,7 @@ export default function App() {
       </section>
 
       <footer className="border-t border-white/10 px-5 py-10 md:px-6">
-        <div className="mx-auto flex max-w-6xl flex-col gap-6 text-white/45 md:flex-row md:items-center md:justify-between">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 text-center text-white/45 md:flex-row md:items-center md:justify-between md:text-left">
           <div className="flex items-center gap-3 text-white">
             <span className="flex h-9 w-9 items-center justify-center rounded-2xl bg-rose-800">
               <PawPrint className="h-4 w-4" />
