@@ -42,6 +42,135 @@ button {
   backdrop-filter: blur(18px);
 }
 
+/* ── Liquid Glass Navbar ─────────────────────────────────────── */
+.liquid-glass-nav {
+  border-radius: 1.25rem;
+  /* multi-layer glass: tinted base + prismatic shimmer on top */
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.06) 0%,
+      rgba(255, 255, 255, 0.02) 50%,
+      rgba(225, 29, 72, 0.04) 100%
+    );
+  /* layered blur for the thick-glass feel */
+  backdrop-filter: blur(28px) saturate(180%) brightness(1.08);
+  -webkit-backdrop-filter: blur(28px) saturate(180%) brightness(1.08);
+  /* prismatic border: top-left lighter (light catch), bottom-right dimmer */
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  box-shadow:
+    /* outer ambient glow */
+    0 8px 32px rgba(0, 0, 0, 0.45),
+    /* inner top highlight — simulates light hitting glass */
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    /* inner bottom shadow — glass thickness illusion */
+    inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+    /* subtle rose tint from below */
+    0 2px 8px rgba(225, 29, 72, 0.08);
+  /* prismatic border via pseudo overlay */
+  position: relative;
+  overflow: hidden;
+}
+
+/* prismatic edge — a faint rainbow-ish gradient border */
+.liquid-glass-nav::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.22) 0%,
+    rgba(255, 255, 255, 0.06) 30%,
+    rgba(225, 29, 72, 0.18) 60%,
+    rgba(255, 255, 255, 0.10) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* inner light-refraction streak */
+.liquid-glass-nav::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 15%;
+  width: 40%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.55),
+    transparent
+  );
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+/* when scrolled: slightly more opaque and tighter glow */
+.liquid-glass-nav.scrolled {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.09) 0%,
+      rgba(0, 0, 0, 0.55) 50%,
+      rgba(225, 29, 72, 0.06) 100%
+    );
+  backdrop-filter: blur(40px) saturate(200%) brightness(1.05);
+  -webkit-backdrop-filter: blur(40px) saturate(200%) brightness(1.05);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+    0 4px 16px rgba(225, 29, 72, 0.1);
+}
+
+/* Mobile drawer — same glass language, rounded card */
+.liquid-glass-drawer {
+  border-radius: 1.5rem;
+  background:
+    linear-gradient(
+      160deg,
+      rgba(255, 255, 255, 0.09) 0%,
+      rgba(0, 0, 0, 0.72) 60%,
+      rgba(225, 29, 72, 0.05) 100%
+    );
+  backdrop-filter: blur(40px) saturate(180%) brightness(1.06);
+  -webkit-backdrop-filter: blur(40px) saturate(180%) brightness(1.06);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.liquid-glass-drawer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.04) 40%,
+    rgba(225, 29, 72, 0.15) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
 .card-hover {
   transition: transform 0.25s ease, border-color 0.25s ease,
     background 0.25s ease;
@@ -96,6 +225,34 @@ details[open] p {
 
 .stat-number {
   font-variant-numeric: tabular-nums;
+}
+
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: 999;
+}
+
+.skip-to-content:focus {
+  position: fixed;
+  left: 50%;
+  top: 1rem;
+  transform: translateX(-50%);
+  width: auto;
+  height: auto;
+  overflow: visible;
+  padding: 0.75rem 1.5rem;
+  background: #e11d48;
+  color: #fff;
+  font-weight: 700;
+  border-radius: 9999px;
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+  text-decoration: none;
 }
 
 /* Mobile responsiveness fixes */
