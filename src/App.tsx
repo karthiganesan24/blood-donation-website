@@ -188,18 +188,24 @@ function DonorNetworkCard() {
                   strokeWidth="1" />
 
                 {d.species === "dog" ? (
-                  <g transform={`translate(${x2 - 8},${y2 - 8}) scale(0.8)`} fill={iconColor}>
-                    <ellipse cx="10" cy="14" rx="5.5" ry="4.5" />
-                    <ellipse cx="4"  cy="8"  rx="2.5" ry="3" />
-                    <ellipse cx="10" cy="6"  rx="2.5" ry="3" />
-                    <ellipse cx="16" cy="8"  rx="2.5" ry="3" />
-                    <ellipse cx="19" cy="13" rx="2"   ry="2.5" />
+                  /* Lucide PawPrint — 24×24 viewbox, centred on node */
+                  <g transform={`translate(${x2 - 12},${y2 - 12})`}
+                    fill="none" stroke={iconColor} strokeWidth="1.75"
+                    strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="11" cy="4" r="2" />
+                    <circle cx="18" cy="8" r="2" />
+                    <circle cx="20" cy="16" r="2" />
+                    <path d="M9 10a5 5 0 0 1 5 5v3.5a3.5 3.5 0 0 1-6.84 1.045Q6.52 17.48 4.46 16.84A3.5 3.5 0 0 1 5.5 10Z" />
                   </g>
                 ) : (
-                  <g fill={iconColor}>
-                    <circle cx={x2} cy={y2 + 1} r="7" />
-                    <polygon points={`${x2-7},${y2-5} ${x2-4},${y2-12} ${x2-1},${y2-5}`} />
-                    <polygon points={`${x2+1},${y2-5} ${x2+4},${y2-12} ${x2+7},${y2-5}`} />
+                  /* Lucide Cat — 24×24 viewbox, centred on node */
+                  <g transform={`translate(${x2 - 12},${y2 - 12})`}
+                    fill="none" stroke={iconColor} strokeWidth="1.75"
+                    strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 5c.67 0 1.35.09 2 .26 1.78-2 5.03-2.84 6.42-2.26 1.4.58-.42 7-.42 7 .57 1.07 1 2.24 1 3.44C21 17.9 16.97 21 12 21s-9-3-9-7.56c0-1.25.5-2.4 1-3.44 0 0-1.89-6.42-.5-7 1.39-.58 4.72.23 6.5 2.23A9.04 9.04 0 0 1 12 5Z" />
+                    <path d="M8 14v.5" />
+                    <path d="M16 14v.5" />
+                    <path d="M11.25 16.25h1.5L12 17l-.75-.75Z" />
                   </g>
                 )}
 
@@ -220,8 +226,11 @@ function DonorNetworkCard() {
           </circle>
           <circle cx={CX} cy={CY} r="28" fill="rgba(225,29,72,0.14)"
             stroke="rgba(225,29,72,0.45)" strokeWidth="1.5" />
-          <g transform={`translate(${CX - 10},${CY - 10})`} fill="#fb7185">
-            <path d="M10 17.5C10 17.5 2 12 2 7c0-2.8 2.2-5 5-5 1.4 0 2.7.6 3 1.3C10.3 2.6 11.6 2 13 2c2.8 0 5 2.2 5 5 0 5-8 10.5-8 10.5Z" />
+          {/* Lucide Heart — 24×24 viewbox centred on (CX, CY) */}
+          <g transform={`translate(${CX - 12},${CY - 12})`}
+            fill="#fb7185" stroke="#fb7185" strokeWidth="1.5"
+            strokeLinecap="round" strokeLinejoin="round">
+            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
           </g>
           <text x={CX} y={CY + 52} textAnchor="middle"
             fontSize="9.5" fontWeight="700"

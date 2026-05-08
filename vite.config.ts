@@ -34,7 +34,7 @@ function ssgPlugin(): Plugin {
         writeFileSync(resolve(root, "dist/index.html"), result, "utf-8");
         console.log("\x1b[32m✓\x1b[0m SSG pre-render complete.");
       } finally {
-        await vite.close();
+        await vite.close().catch(() => {});
       }
     },
   };
