@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowRight,
@@ -99,7 +99,6 @@ const faqs = [
   },
 ];
 
-// Donor nodes positioned around the centre of the SVG viewport (cx=200, cy=160)
 const DONORS = [
   { id: 0, angle: -90,  label: "Rex",   species: "dog" },
   { id: 1, angle: -30,  label: "Luna",  species: "cat" },
@@ -111,7 +110,7 @@ const DONORS = [
 
 const RADIUS = 105;
 const CX = 200;
-const CY = 160;
+const CY = 155;
 
 function toXY(angleDeg: number, r: number) {
   const rad = (angleDeg * Math.PI) / 180;
@@ -147,183 +146,112 @@ function DonorNetworkCard() {
   }, []);
 
   return (
-    <div className="relative w-full select-none">
-      {/* Card shell */}
-      <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-zinc-900/80 to-black/90 shadow-2xl shadow-rose-950/25">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(225,29,72,0.11),transparent_60%)]" />
+    <div className="w-full select-none overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-zinc-900/80 to-black/90 shadow-2xl shadow-rose-950/25">
+      <div className="absolute inset-0 rounded-[2rem] bg-[radial-gradient(ellipse_at_50%_0%,rgba(225,29,72,0.1),transparent_60%)]" />
 
-        <div className="relative p-5">
-          {/* Header */}
-          <div className="mb-3 flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-[0.18em] text-white/35">
-              Donor Network
-            </span>
-            <span className="flex items-center gap-1.5 rounded-full bg-emerald-950/60 px-2.5 py-1 text-[11px] font-bold text-emerald-400 ring-1 ring-emerald-500/20">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
-              Live
-            </span>
-          </div>
+      <div className="relative p-5 pb-0">
+        <div className="mb-3 flex items-center justify-between">
+          <span className="text-xs font-bold uppercase tracking-[0.18em] text-white/35">
+            Donor Network
+          </span>
+          <span className="flex items-center gap-1.5 rounded-full bg-emerald-950/60 px-2.5 py-1 text-[11px] font-bold text-emerald-400 ring-1 ring-emerald-500/20">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
+            Live
+          </span>
+        </div>
 
-          {/* SVG network */}
-          <svg viewBox="0 0 400 320" className="w-full" aria-hidden="true">
-            {/* Orbit ring */}
-            <circle cx={CX} cy={CY} r={RADIUS} fill="none"
-              stroke="rgba(255,255,255,0.05)" strokeWidth="1" strokeDasharray="4 6" />
+        <svg viewBox="0 0 400 310" className="w-full" aria-hidden="true">
+          <circle cx={CX} cy={CY} r={RADIUS} fill="none"
+            stroke="rgba(255,255,255,0.05)" strokeWidth="1" strokeDasharray="4 6" />
 
-            {DONORS.map((d) => {
-              const { x: x2, y: y2 } = toXY(d.angle, RADIUS);
-              const isActive = d.id === active;
-              const px = isActive ? CX + (x2 - CX) * (1 - pulse) : null;
-              const py = isActive ? CY + (y2 - CY) * (1 - pulse) : null;
-              const iconColor = isActive ? "#fb7185" : "rgba(255,255,255,0.4)";
+          {DONORS.map((d) => {
+            const { x: x2, y: y2 } = toXY(d.angle, RADIUS);
+            const isActive = d.id === active;
+            const px = isActive ? CX + (x2 - CX) * (1 - pulse) : null;
+            const py = isActive ? CY + (y2 - CY) * (1 - pulse) : null;
+            const iconColor = isActive ? "#fb7185" : "rgba(255,255,255,0.38)";
+            const { x: lx, y: ly } = toXY(d.angle, RADIUS + 33);
 
-              return (
-                <g key={d.id}>
-                  <line x1={CX} y1={CY} x2={x2} y2={y2}
-                    stroke={isActive ? "rgba(225,29,72,0.5)" : "rgba(255,255,255,0.07)"}
-                    strokeWidth={isActive ? "1.5" : "1"} strokeLinecap="round" />
+            return (
+              <g key={d.id}>
+                <line x1={CX} y1={CY} x2={x2} y2={y2}
+                  stroke={isActive ? "rgba(225,29,72,0.45)" : "rgba(255,255,255,0.07)"}
+                  strokeWidth={isActive ? "1.5" : "1"} strokeLinecap="round" />
 
-                  {isActive && px !== null && py !== null && (
-                    <circle cx={px} cy={py} r="3.5" fill="#e11d48" opacity={0.85 - pulse * 0.3} />
-                  )}
+                {isActive && px !== null && py !== null && (
+                  <circle cx={px} cy={py} r="3.5" fill="#e11d48"
+                    opacity={0.85 - pulse * 0.3} />
+                )}
 
-                  {/* Node circle */}
-                  <circle cx={x2} cy={y2} r="20"
-                    fill={isActive ? "rgba(225,29,72,0.15)" : "rgba(255,255,255,0.04)"}
-                    stroke={isActive ? "rgba(225,29,72,0.55)" : "rgba(255,255,255,0.1)"}
-                    strokeWidth="1" />
+                <circle cx={x2} cy={y2} r="20"
+                  fill={isActive ? "rgba(225,29,72,0.15)" : "rgba(255,255,255,0.04)"}
+                  stroke={isActive ? "rgba(225,29,72,0.55)" : "rgba(255,255,255,0.1)"}
+                  strokeWidth="1" />
 
-                  {/* Paw print icon (dog) — 5 ovals */}
-                  {d.species === "dog" ? (
-                    <g transform={`translate(${x2 - 8}, ${y2 - 8}) scale(0.8)`} fill={iconColor}>
-                      {/* main pad */}
-                      <ellipse cx="10" cy="14" rx="5.5" ry="4.5" />
-                      {/* 4 toe beans */}
-                      <ellipse cx="4"  cy="8"  rx="2.5" ry="3" />
-                      <ellipse cx="10" cy="6"  rx="2.5" ry="3" />
-                      <ellipse cx="16" cy="8"  rx="2.5" ry="3" />
-                      <ellipse cx="19" cy="13" rx="2"   ry="2.5" />
-                    </g>
-                  ) : (
-                    /* Cat head silhouette — circle + two ear triangles */
-                    <g fill={iconColor}>
-                      <circle cx={x2} cy={y2 + 1} r="7" />
-                      <polygon points={`${x2 - 7},${y2 - 5} ${x2 - 4},${y2 - 12} ${x2 - 1},${y2 - 5}`} />
-                      <polygon points={`${x2 + 1},${y2 - 5} ${x2 + 4},${y2 - 12} ${x2 + 7},${y2 - 5}`} />
-                    </g>
-                  )}
+                {d.species === "dog" ? (
+                  <g transform={`translate(${x2 - 8},${y2 - 8}) scale(0.8)`} fill={iconColor}>
+                    <ellipse cx="10" cy="14" rx="5.5" ry="4.5" />
+                    <ellipse cx="4"  cy="8"  rx="2.5" ry="3" />
+                    <ellipse cx="10" cy="6"  rx="2.5" ry="3" />
+                    <ellipse cx="16" cy="8"  rx="2.5" ry="3" />
+                    <ellipse cx="19" cy="13" rx="2"   ry="2.5" />
+                  </g>
+                ) : (
+                  <g fill={iconColor}>
+                    <circle cx={x2} cy={y2 + 1} r="7" />
+                    <polygon points={`${x2-7},${y2-5} ${x2-4},${y2-12} ${x2-1},${y2-5}`} />
+                    <polygon points={`${x2+1},${y2-5} ${x2+4},${y2-12} ${x2+7},${y2-5}`} />
+                  </g>
+                )}
 
-                  {/* Name label */}
-                  {(() => {
-                    const { x: lx, y: ly } = toXY(d.angle, RADIUS + 33);
-                    return (
-                      <text x={lx} y={ly + 4} textAnchor="middle"
-                        fontSize="11" fontWeight="600"
-                        fill={isActive ? "rgba(251,113,133,0.9)" : "rgba(255,255,255,0.28)"}
-                        fontFamily="Inter, system-ui, sans-serif">
-                        {d.label}
-                      </text>
-                    );
-                  })()}
-                </g>
-              );
-            })}
+                <text x={lx} y={ly + 4} textAnchor="middle"
+                  fontSize="11" fontWeight="600"
+                  fill={isActive ? "rgba(251,113,133,0.9)" : "rgba(255,255,255,0.28)"}
+                  fontFamily="Inter, system-ui, sans-serif">
+                  {d.label}
+                </text>
+              </g>
+            );
+          })}
 
-            {/* Centre recipient — pulsing rings */}
-            <circle cx={CX} cy={CY} r="40" fill="rgba(225,29,72,0.07)" stroke="rgba(225,29,72,0.2)" strokeWidth="1">
-              <animate attributeName="r" values="38;42;38" dur="2.2s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="1;0.4;1" dur="2.2s" repeatCount="indefinite" />
-            </circle>
-            <circle cx={CX} cy={CY} r="28" fill="rgba(225,29,72,0.15)" stroke="rgba(225,29,72,0.45)" strokeWidth="1.5" />
+          <circle cx={CX} cy={CY} r="40" fill="rgba(225,29,72,0.06)"
+            stroke="rgba(225,29,72,0.18)" strokeWidth="1">
+            <animate attributeName="r" values="38;43;38" dur="2.2s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="1;0.35;1" dur="2.2s" repeatCount="indefinite" />
+          </circle>
+          <circle cx={CX} cy={CY} r="28" fill="rgba(225,29,72,0.14)"
+            stroke="rgba(225,29,72,0.45)" strokeWidth="1.5" />
+          <g transform={`translate(${CX - 10},${CY - 10})`} fill="#fb7185">
+            <path d="M10 17.5C10 17.5 2 12 2 7c0-2.8 2.2-5 5-5 1.4 0 2.7.6 3 1.3C10.3 2.6 11.6 2 13 2c2.8 0 5 2.2 5 5 0 5-8 10.5-8 10.5Z" />
+          </g>
+          <text x={CX} y={CY + 52} textAnchor="middle"
+            fontSize="9.5" fontWeight="700"
+            fill="rgba(251,113,133,0.55)"
+            fontFamily="Inter, system-ui, sans-serif"
+            letterSpacing="0.12em">
+            NEEDS BLOOD
+          </text>
+        </svg>
+      </div>
 
-            {/* Heart icon in centre */}
-            <g transform={`translate(${CX - 10}, ${CY - 10})`} fill="#fb7185">
-              <path d="M10 17.5 C10 17.5 2 12 2 7 C2 4.2 4.2 2 7 2 C8.4 2 9.7 2.6 10 3.3 C10.3 2.6 11.6 2 13 2 C15.8 2 18 4.2 18 7 C18 12 10 17.5 10 17.5Z" />
-            </g>
-
-            {/* NEEDS BLOOD label */}
-            <text x={CX} y={CY + 52} textAnchor="middle"
-              fontSize="10" fontWeight="700"
-              fill="rgba(251,113,133,0.6)"
-              fontFamily="Inter, system-ui, sans-serif"
-              letterSpacing="0.1em">
-              NEEDS BLOOD
-            </text>
-          </svg>
-
-          {/* Bottom bar — active donor + stats */}
-          <div className="mt-1 grid grid-cols-3 gap-2 rounded-2xl bg-white/[0.04] px-4 py-3">
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-wide text-white/30">Donor</p>
-              <p className="mt-0.5 text-sm font-bold text-white/80">{DONORS[active].label}</p>
-              <p className="text-[11px] capitalize text-white/35">{DONORS[active].species}</p>
-            </div>
-            <div className="border-x border-white/8 px-2 text-center">
-              <p className="text-[10px] font-semibold uppercase tracking-wide text-white/30">Goal</p>
-              <p className="mt-0.5 text-2xl font-black tracking-tight text-white">100</p>
-              <p className="text-[11px] text-white/35">donor pets</p>
-            </div>
-            <div className="text-right">
-              <p className="text-[10px] font-semibold uppercase tracking-wide text-white/30">Cost</p>
-              <p className="mt-0.5 text-2xl font-black tracking-tight text-rose-400">0</p>
-              <p className="text-[11px] text-white/35">free</p>
-            </div>
-          </div>
+      <div className="relative grid grid-cols-3 divide-x divide-white/[0.07] border-t border-white/[0.07]">
+        <div className="px-4 py-4">
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-white/30">Donor</p>
+          <p className="mt-1 text-sm font-bold leading-tight text-white/85">{DONORS[active].label}</p>
+          <p className="mt-0.5 text-[11px] capitalize text-white/35">{DONORS[active].species}</p>
+        </div>
+        <div className="px-4 py-4 text-center">
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-white/30">Goal</p>
+          <p className="mt-1 text-2xl font-black tracking-tight text-white">100</p>
+          <p className="mt-0.5 text-[11px] text-white/35">donor pets</p>
+        </div>
+        <div className="px-4 py-4 text-right">
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-white/30">Cost</p>
+          <p className="mt-1 text-2xl font-black tracking-tight text-rose-400">Free</p>
+          <p className="mt-0.5 text-[11px] text-white/35">to register</p>
         </div>
       </div>
     </div>
-  );
-}
-
-function AnimatedCounter({ end, suffix = "" }: { end: number; suffix?: string }) {
-  const [count, setCount] = useState(0);
-  const [started, setStarted] = useState(false);
-  const ref = useRef<HTMLSpanElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setStarted(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.5 }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (!started) return;
-
-    let current = 0;
-    const duration = 1000;
-    const increment = Math.max(1, Math.ceil(end / (duration / 16)));
-
-    const timer = window.setInterval(() => {
-      current += increment;
-
-      if (current >= end) {
-        setCount(end);
-        window.clearInterval(timer);
-      } else {
-        setCount(current);
-      }
-    }, 16);
-
-    return () => window.clearInterval(timer);
-  }, [started, end]);
-
-  return (
-    <span ref={ref} className="stat-number">
-      {count}
-      {suffix}
-    </span>
   );
 }
 
@@ -339,7 +267,6 @@ export default function App() {
       setShowBackToTop(window.scrollY > 300);
     };
     handleScroll();
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -353,25 +280,17 @@ export default function App() {
       },
       { threshold: 0.25, rootMargin: "-90px 0px -50% 0px" }
     );
-
-    document
-      .querySelectorAll("section[id]")
-      .forEach((section) => observer.observe(section));
-
+    document.querySelectorAll("section[id]").forEach((s) => observer.observe(s));
     return () => observer.disconnect();
   }, []);
 
   const scrollToSection = (href: string) => {
     setIsMenuOpen(false);
-
     setTimeout(() => {
       const target = document.querySelector(href);
-
       if (target) {
-        const y = target.getBoundingClientRect().top + window.scrollY - 100;
-
         window.scrollTo({
-          top: y,
+          top: target.getBoundingClientRect().top + window.scrollY - 100,
           behavior: "smooth",
         });
       }
@@ -385,84 +304,52 @@ export default function App() {
 
   const backToTop = () => {
     setIsMenuOpen(false);
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#050505] text-white selection:bg-rose-700 selection:text-white">
-      <a
-        href="#main-content"
-        className="skip-to-content"
-      >
+      <a href="#main-content" className="skip-to-content">
         Skip to main content
       </a>
-      {/* Liquid-glass navbar — floats as a pill on desktop, full-width on mobile */}
+
       <div className="fixed left-0 right-0 top-0 z-50 flex justify-center px-4 pt-4 md:px-6 md:pt-5">
-        <nav
-          className={`liquid-glass-nav w-full max-w-6xl transition-all duration-500 ${
-            scrolled ? "scrolled" : ""
-          }`}
-        >
+        <nav className={`liquid-glass-nav w-full max-w-6xl transition-all duration-500 ${scrolled ? "scrolled" : ""}`}>
           <div className="flex h-16 items-center justify-between px-4 md:px-5">
-            <button
-              type="button"
-              onClick={backToTop}
-              className="flex items-center gap-2.5 text-left"
-              aria-label="Go to homepage"
-            >
+            <button type="button" onClick={backToTop}
+              className="flex items-center gap-2.5 text-left" aria-label="Go to homepage">
               <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-rose-800/80 shadow-lg shadow-rose-950/50 ring-1 ring-white/10">
                 <PawPrint className="h-4 w-4" />
               </span>
               <span>
-                <span className="block text-base font-bold tracking-tight">
-                  Paw Pulse LK
-                </span>
-                <span className="hidden text-[11px] text-white/40 sm:block">
-                  Cat & Dog Blood Donation
-                </span>
+                <span className="block text-base font-bold tracking-tight">Paw Pulse LK</span>
+                <span className="hidden text-[11px] text-white/40 sm:block">Cat & Dog Blood Donation</span>
               </span>
             </button>
 
             <div className="hidden items-center gap-7 md:flex">
               {navLinks.map((link) => (
-                <button
-                  type="button"
-                  key={link.href}
+                <button type="button" key={link.href}
                   onClick={() => scrollToSection(link.href)}
                   className={`nav-link text-sm font-medium transition ${
                     activeSection === link.href.slice(1)
                       ? "active text-white"
                       : "text-white/55 hover:text-white"
-                  }`}
-                >
+                  }`}>
                   {link.label}
                 </button>
               ))}
             </div>
 
             <div className="flex items-center gap-2.5">
-              <button
-                type="button"
-                onClick={openGoogleForm}
-                className="hidden rounded-full bg-rose-700/90 px-4 py-2 text-sm font-bold text-white shadow-lg shadow-rose-950/40 ring-1 ring-white/10 transition hover:bg-rose-600 md:inline-flex"
-              >
+              <button type="button" onClick={openGoogleForm}
+                className="hidden rounded-full bg-rose-700/90 px-4 py-2 text-sm font-bold text-white shadow-lg shadow-rose-950/40 ring-1 ring-white/10 transition hover:bg-rose-600 md:inline-flex">
                 Register Pet
               </button>
-
-              <button
-                type="button"
-                onClick={() => setIsMenuOpen((value) => !value)}
+              <button type="button" onClick={() => setIsMenuOpen((v) => !v)}
                 className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 backdrop-blur-sm transition active:bg-white/10 md:hidden"
-                aria-label="Toggle menu"
-              >
-                {isMenuOpen ? (
-                  <X className="h-4 w-4" />
-                ) : (
-                  <Menu className="h-4 w-4" />
-                )}
+                aria-label="Toggle menu">
+                {isMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
               </button>
             </div>
           </div>
@@ -476,25 +363,17 @@ export default function App() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.97, y: -6 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="liquid-glass-drawer fixed left-4 right-4 top-24 z-[60] md:hidden"
-          >
+            className="liquid-glass-drawer fixed left-4 right-4 top-24 z-[60] md:hidden">
             <div className="flex flex-col gap-1 p-3">
               {navLinks.map((link) => (
-                <button
-                  type="button"
-                  key={link.href}
+                <button type="button" key={link.href}
                   onClick={() => scrollToSection(link.href)}
-                  className="w-full rounded-2xl px-4 py-3.5 text-left text-base font-semibold text-white/80 transition hover:bg-white/8 active:bg-white/10"
-                >
+                  className="w-full rounded-2xl px-4 py-3.5 text-left text-base font-semibold text-white/80 transition hover:bg-white/5 active:bg-white/10">
                   {link.label}
                 </button>
               ))}
-
-              <button
-                type="button"
-                onClick={openGoogleForm}
-                className="mt-1 w-full rounded-2xl bg-rose-700/90 px-4 py-3.5 text-base font-bold text-white ring-1 ring-white/10 transition active:bg-rose-800"
-              >
+              <button type="button" onClick={openGoogleForm}
+                className="mt-1 w-full rounded-2xl bg-rose-700/90 px-4 py-3.5 text-base font-bold text-white ring-1 ring-white/10 transition active:bg-rose-800">
                 Fill Google Form
               </button>
             </div>
@@ -502,19 +381,12 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      <section
-        id="home"
-        className="relative px-5 pb-20 pt-32 md:px-6 md:pb-28 md:pt-36"
-      >
+      <section id="home" className="relative px-5 pb-20 pt-32 md:px-6 md:pb-28 md:pt-36">
         <span id="main-content" className="sr-only" />
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_25%_20%,rgba(225,29,72,0.22),transparent_30%),radial-gradient(circle_at_80%_10%,rgba(136,19,55,0.18),transparent_35%)]" />
 
-        <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
-          <motion.div
-            initial={{ opacity: 0, y: 22 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
+        <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+          <motion.div initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <div className="mb-7 inline-flex max-w-full items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-white/65 sm:tracking-[0.2em]">
               <Heart className="h-4 w-4 shrink-0 text-rose-500" />
               <span>Initiated by Leo Club of Colombo City 306D5</span>
@@ -523,7 +395,7 @@ export default function App() {
             <h1 className="gradient-text text-[3.25rem] font-black leading-[0.95] tracking-[-0.07em] sm:text-6xl md:text-8xl">
               Save a life.
               <br />
-              Let your pet be a hero.
+              Let your pet<br className="hidden sm:block" /> be a hero.
             </h1>
 
             <p className="mt-8 max-w-xl text-base leading-8 text-white/60 sm:text-lg md:text-xl">
@@ -533,19 +405,12 @@ export default function App() {
             </p>
 
             <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-              <button
-                type="button"
-                onClick={openGoogleForm}
-                className="inline-flex w-full items-center justify-center gap-3 rounded-full bg-white px-7 py-4 font-extrabold text-black transition hover:bg-rose-100 sm:w-auto"
-              >
+              <button type="button" onClick={openGoogleForm}
+                className="inline-flex w-full items-center justify-center gap-3 rounded-full bg-white px-7 py-4 font-extrabold text-black transition hover:bg-rose-100 sm:w-auto">
                 Fill Registration Form <ArrowRight className="h-4 w-4" />
               </button>
-
-              <button
-                type="button"
-                onClick={() => scrollToSection("#eligibility")}
-                className="inline-flex w-full items-center justify-center rounded-full border border-white/10 px-7 py-4 font-bold text-white/80 transition hover:bg-white/5 hover:text-white sm:w-auto"
-              >
+              <button type="button" onClick={() => scrollToSection("#eligibility")}
+                className="inline-flex w-full items-center justify-center rounded-full border border-white/10 px-7 py-4 font-bold text-white/80 transition hover:bg-white/5 hover:text-white sm:w-auto">
                 Check Eligibility
               </button>
             </div>
@@ -555,31 +420,9 @@ export default function App() {
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="w-full"
-          >
+            className="relative w-full">
             <DonorNetworkCard />
           </motion.div>
-        </div>
-      </section>
-
-      <section className="border-y border-white/10 bg-black/40 px-5 py-12 md:px-6">
-        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-4 text-center sm:grid-cols-2 md:grid-cols-4 md:gap-6">
-          {[
-            { value: 100, suffix: "%", label: "Free Registration" },
-            { value: 4, suffix: "", label: "Simple Steps" },
-            { value: 0, suffix: "", label: "Forced Commitment" },
-            { value: 1, suffix: "+", label: "Life to Save" },
-          ].map((stat) => (
-            <div
-              key={stat.label}
-              className="rounded-3xl border border-white/5 bg-white/[0.03] p-5"
-            >
-              <p className="text-4xl font-black tracking-tight md:text-5xl">
-                <AnimatedCounter end={stat.value} suffix={stat.suffix} />
-              </p>
-              <p className="mt-2 text-sm text-white/45">{stat.label}</p>
-            </div>
-          ))}
         </div>
       </section>
 
@@ -589,7 +432,6 @@ export default function App() {
             <p className="text-xs font-bold uppercase tracking-[0.25em] text-rose-500">
               About the initiative
             </p>
-
             <h2 className="mt-4 text-4xl font-black leading-tight tracking-tight md:text-6xl">
               Why cat and dog blood donation matters.
             </h2>
@@ -601,14 +443,12 @@ export default function App() {
               illness, poisoning cases, or emergency treatment. In those
               moments, finding a suitable donor quickly is critical.
             </p>
-
             <p>
               Initiated by Leo Club of Colombo City 306D5, this website helps
               collect potential cat and dog donor details through a Google Form
               so the organising team can build a reliable contact network for
               urgent cases.
             </p>
-
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="glass-card rounded-3xl p-5">
                 <Stethoscope className="mb-3 h-6 w-6 text-rose-500" />
@@ -617,7 +457,6 @@ export default function App() {
                   Final suitability must be confirmed professionally.
                 </p>
               </div>
-
               <div className="glass-card rounded-3xl p-5">
                 <ShieldCheck className="mb-3 h-6 w-6 text-rose-500" />
                 <b className="text-white">Consent-based</b>
@@ -630,20 +469,15 @@ export default function App() {
         </div>
       </section>
 
-      <section
-        id="eligibility"
-        className="bg-zinc-950 px-5 py-20 md:px-6 md:py-28"
-      >
+      <section id="eligibility" className="bg-zinc-950 px-5 py-20 md:px-6 md:py-28">
         <div className="mx-auto max-w-6xl">
           <div className="mb-12 max-w-3xl">
             <p className="text-xs font-bold uppercase tracking-[0.25em] text-rose-500">
               Eligibility
             </p>
-
             <h2 className="mt-4 text-4xl font-black leading-tight tracking-tight md:text-6xl">
               Is your pet ready to help?
             </h2>
-
             <p className="mt-5 text-base leading-8 text-white/60 sm:text-lg">
               These are general guidelines. Final eligibility should always be
               confirmed by veterinary professionals.
@@ -653,20 +487,12 @@ export default function App() {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {eligibilityItems.map((item) => {
               const Icon = item.icon;
-
               return (
-                <div
-                  key={item.title}
-                  className="card-hover rounded-3xl border border-white/10 bg-black p-7"
-                >
+                <div key={item.title} className="card-hover rounded-3xl border border-white/10 bg-black p-7">
                   <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-rose-900/25 text-rose-500">
                     <Icon className="h-6 w-6" />
                   </div>
-
-                  <h3 className="text-xl font-black tracking-tight">
-                    {item.title}
-                  </h3>
-
+                  <h3 className="text-xl font-black tracking-tight">{item.title}</h3>
                   <p className="mt-2 leading-7 text-white/55">{item.desc}</p>
                 </div>
               );
@@ -681,7 +507,6 @@ export default function App() {
             <p className="text-xs font-bold uppercase tracking-[0.25em] text-rose-500">
               How it works
             </p>
-
             <h2 className="mt-4 text-4xl font-black tracking-tight md:text-6xl">
               Simple. Safe. Meaningful.
             </h2>
@@ -689,45 +514,29 @@ export default function App() {
 
           <div className="grid gap-4 md:grid-cols-4">
             {processSteps.map((step) => (
-              <div
-                key={step.num}
-                className="card-hover rounded-3xl border border-white/10 bg-white/[0.03] p-7"
-              >
+              <div key={step.num} className="card-hover rounded-3xl border border-white/10 bg-white/[0.03] p-7">
                 <p className="font-mono text-5xl font-black tracking-[-0.08em] text-rose-700">
                   {step.num}
                 </p>
-
-                <h3 className="mt-8 text-xl font-black tracking-tight">
-                  {step.title}
-                </h3>
-
+                <h3 className="mt-8 text-xl font-black tracking-tight">{step.title}</h3>
                 <p className="mt-3 leading-7 text-white/55">{step.desc}</p>
               </div>
             ))}
           </div>
 
           <div className="mt-12 text-center">
-            <button
-              type="button"
-              onClick={openGoogleForm}
-              className="inline-flex w-full items-center justify-center gap-3 rounded-full bg-rose-700 px-8 py-4 font-bold transition hover:bg-rose-600 sm:w-auto"
-            >
+            <button type="button" onClick={openGoogleForm}
+              className="inline-flex w-full items-center justify-center gap-3 rounded-full bg-rose-700 px-8 py-4 font-bold transition hover:bg-rose-600 sm:w-auto">
               Register Through Google Form <ArrowRight className="h-4 w-4" />
             </button>
           </div>
         </div>
       </section>
 
-      <section
-        id="faq"
-        className="border-y border-white/10 bg-zinc-950 px-5 py-20 md:px-6 md:py-28"
-      >
+      <section id="faq" className="border-y border-white/10 bg-zinc-950 px-5 py-20 md:px-6 md:py-28">
         <div className="mx-auto max-w-3xl">
           <div className="mb-10 text-center">
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-rose-500">
-              FAQ
-            </p>
-
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-rose-500">FAQ</p>
             <h2 className="mt-4 text-4xl font-black tracking-tight md:text-6xl">
               Questions answered.
             </h2>
@@ -735,17 +544,11 @@ export default function App() {
 
           <div className="space-y-3">
             {faqs.map((faq) => (
-              <details
-                key={faq.q}
-                className="group rounded-3xl border border-white/10 bg-black px-6 py-2"
-              >
+              <details key={faq.q} className="group rounded-3xl border border-white/10 bg-black px-6 py-2">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-5 py-5 text-base font-bold sm:text-lg">
                   {faq.q}
-                  <span className="text-2xl text-rose-500 transition group-open:rotate-45">
-                    +
-                  </span>
+                  <span className="text-2xl text-rose-500 transition group-open:rotate-45">+</span>
                 </summary>
-
                 <p className="pb-5 leading-7 text-white/55">{faq.a}</p>
               </details>
             ))}
@@ -756,51 +559,38 @@ export default function App() {
       <section className="px-5 py-20 text-center md:px-6 md:py-28">
         <div className="mx-auto max-w-3xl rounded-[2rem] border border-rose-500/20 bg-rose-950/20 p-6 sm:p-8 md:p-12">
           <PawPrint className="mx-auto h-12 w-12 text-rose-500" />
-
           <h2 className="mt-6 text-4xl font-black tracking-tight md:text-6xl">
             Ready to register your pet?
           </h2>
-
           <p className="mx-auto mt-5 max-w-xl text-base leading-8 text-white/60 sm:text-lg">
             The form is quick, free, and helps us build a life-saving donor
             network for cats and dogs.
           </p>
-
-          <button
-            type="button"
-            onClick={openGoogleForm}
-            className="mt-8 inline-flex w-full items-center justify-center gap-3 rounded-full bg-white px-8 py-4 font-black text-black transition hover:bg-rose-100 sm:w-auto"
-          >
+          <button type="button" onClick={openGoogleForm}
+            className="mt-8 inline-flex w-full items-center justify-center gap-3 rounded-full bg-white px-8 py-4 font-black text-black transition hover:bg-rose-100 sm:w-auto">
             Fill Google Form <ArrowRight className="h-4 w-4" />
           </button>
         </div>
       </section>
 
       <footer className="border-t border-white/10 px-5 py-10 md:px-6">
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 text-center text-white/45 md:flex-row md:items-center md:justify-between md:text-left">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 text-center text-white/45 md:flex-row md:justify-between md:text-left">
           <div className="flex items-center gap-3 text-white">
             <span className="flex h-9 w-9 items-center justify-center rounded-2xl bg-rose-800">
               <PawPrint className="h-4 w-4" />
             </span>
-
             <span className="font-bold">Paw Pulse LK</span>
           </div>
-
           <p className="text-sm">
-            © 2026 Paw Pulse LK. Cat & dog blood donation initiative by Leo
-            Club of Colombo City 306D5.
+            © 2026 Paw Pulse LK. Cat & dog blood donation initiative by Leo Club of Colombo City 306D5.
           </p>
         </div>
       </footer>
 
-      <button
-        type="button"
-        onClick={backToTop}
-        aria-label="Back to top"
+      <button type="button" onClick={backToTop} aria-label="Back to top"
         className={`fixed bottom-5 right-5 z-30 h-12 w-12 items-center justify-center rounded-full border border-rose-500/30 bg-rose-700 text-xl font-black text-white shadow-2xl shadow-rose-950/50 transition-all duration-300 hover:bg-rose-600 active:scale-[0.98] md:bottom-6 md:right-6 ${
           showBackToTop ? "flex" : "hidden"
-        }`}
-      >
+        }`}>
         ↑
       </button>
     </main>
