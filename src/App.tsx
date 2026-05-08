@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowRight,
   Award,
@@ -356,37 +355,28 @@ export default function App() {
         </nav>
       </div>
 
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.97, y: -6 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.97, y: -6 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-            className="liquid-glass-drawer fixed left-4 right-4 top-24 z-[60] md:hidden">
-            <div className="flex flex-col gap-1 p-3">
-              {navLinks.map((link) => (
-                <button type="button" key={link.href}
-                  onClick={() => scrollToSection(link.href)}
-                  className="w-full rounded-2xl px-4 py-3.5 text-left text-base font-semibold text-white/80 transition hover:bg-white/5 active:bg-white/10">
-                  {link.label}
-                </button>
-              ))}
-              <button type="button" onClick={openGoogleForm}
-                className="mt-1 w-full rounded-2xl bg-rose-700/90 px-4 py-3.5 text-base font-bold text-white ring-1 ring-white/10 transition active:bg-rose-800">
-                Fill Google Form
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div className={`mobile-drawer liquid-glass-drawer fixed left-4 right-4 top-24 z-[60] md:hidden ${isMenuOpen ? "open" : ""}`}>
+        <div className="flex flex-col gap-1 p-3">
+          {navLinks.map((link) => (
+            <button type="button" key={link.href}
+              onClick={() => scrollToSection(link.href)}
+              className="w-full rounded-2xl px-4 py-3.5 text-left text-base font-semibold text-white/80 transition hover:bg-white/5 active:bg-white/10">
+              {link.label}
+            </button>
+          ))}
+          <button type="button" onClick={openGoogleForm}
+            className="mt-1 w-full rounded-2xl bg-rose-700/90 px-4 py-3.5 text-base font-bold text-white ring-1 ring-white/10 transition active:bg-rose-800">
+            Fill Google Form
+          </button>
+        </div>
+      </div>
 
       <section id="home" className="relative px-5 pb-20 pt-32 md:px-6 md:pb-28 md:pt-36">
         <span id="main-content" className="sr-only" />
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_25%_20%,rgba(225,29,72,0.22),transparent_30%),radial-gradient(circle_at_80%_10%,rgba(136,19,55,0.18),transparent_35%)]" />
 
         <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
-          <motion.div initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+          <div className="hero-left">
             <div className="mb-7 inline-flex max-w-full items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-white/65 sm:tracking-[0.2em]">
               <Heart className="h-4 w-4 shrink-0 text-rose-500" />
               <span>Initiated by Leo Club of Colombo City 306D5</span>
@@ -414,15 +404,11 @@ export default function App() {
                 Check Eligibility
               </button>
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="relative w-full">
+          <div className="hero-right relative w-full">
             <DonorNetworkCard />
-          </motion.div>
+          </div>
         </div>
       </section>
 
