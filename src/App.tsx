@@ -188,18 +188,23 @@ function DonorNetworkCard() {
                   strokeWidth="1" />
 
                 {d.species === "dog" ? (
-                  <g transform={`translate(${x2 - 8},${y2 - 8}) scale(0.8)`} fill={iconColor}>
-                    <ellipse cx="10" cy="14" rx="5.5" ry="4.5" />
-                    <ellipse cx="4"  cy="8"  rx="2.5" ry="3" />
-                    <ellipse cx="10" cy="6"  rx="2.5" ry="3" />
-                    <ellipse cx="16" cy="8"  rx="2.5" ry="3" />
-                    <ellipse cx="19" cy="13" rx="2"   ry="2.5" />
+                  /* Paw print — centred on (x2,y2), drawn in local coords */
+                  <g transform={`translate(${x2},${y2})`} fill={iconColor}>
+                    {/* main pad */}
+                    <ellipse cx="0" cy="3.5" rx="4.5" ry="3.8" />
+                    {/* top-left toe */}
+                    <ellipse cx="-5" cy="-2.5" rx="2" ry="2.5" />
+                    {/* top-centre toe */}
+                    <ellipse cx="0" cy="-5" rx="2" ry="2.5" />
+                    {/* top-right toe */}
+                    <ellipse cx="5" cy="-2.5" rx="2" ry="2.5" />
                   </g>
                 ) : (
-                  <g fill={iconColor}>
-                    <circle cx={x2} cy={y2 + 1} r="7" />
-                    <polygon points={`${x2-7},${y2-5} ${x2-4},${y2-12} ${x2-1},${y2-5}`} />
-                    <polygon points={`${x2+1},${y2-5} ${x2+4},${y2-12} ${x2+7},${y2-5}`} />
+                  /* Cat head — circle + two sharp ears, centred on (x2,y2) */
+                  <g transform={`translate(${x2},${y2})`} fill={iconColor}>
+                    <circle cx="0" cy="2" r="6.5" />
+                    <polygon points="-6.5,-3 -3.5,-10 -0.5,-3" />
+                    <polygon points="0.5,-3  3.5,-10  6.5,-3" />
                   </g>
                 )}
 
@@ -220,8 +225,9 @@ function DonorNetworkCard() {
           </circle>
           <circle cx={CX} cy={CY} r="28" fill="rgba(225,29,72,0.14)"
             stroke="rgba(225,29,72,0.45)" strokeWidth="1.5" />
-          <g transform={`translate(${CX - 10},${CY - 10})`} fill="#fb7185">
-            <path d="M10 17.5C10 17.5 2 12 2 7c0-2.8 2.2-5 5-5 1.4 0 2.7.6 3 1.3C10.3 2.6 11.6 2 13 2c2.8 0 5 2.2 5 5 0 5-8 10.5-8 10.5Z" />
+          {/* Heart centred on (CX, CY) — path drawn around origin */}
+          <g transform={`translate(${CX},${CY})`} fill="#fb7185">
+            <path d="M0 8C0 8-8 3-8-2c0-2.8 2.2-5 5-5 1.4 0 2.7.7 3 1.4C0.3-6.3 1.6-7 3-7c2.8 0 5 2.2 5 5 0 5-8 10-8 10Z" />
           </g>
           <text x={CX} y={CY + 52} textAnchor="middle"
             fontSize="9.5" fontWeight="700"
