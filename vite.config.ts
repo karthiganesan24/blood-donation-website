@@ -7,9 +7,7 @@ import { resolve } from "path";
 function ssgPlugin(): Plugin {
   return {
     name: "ssg",
-    // Runs after the client build writes index.html to dist/
     async closeBundle() {
-      // Only run during the client build (not SSR sub-build)
       if ((this as { meta?: { watchMode?: boolean } }).meta?.watchMode) return;
 
       const { createServer } = await import("vite");
@@ -23,9 +21,9 @@ function ssgPlugin(): Plugin {
       });
 
       try {
-        const { render } = (await vite.ssrLoadModule(
-          "/src/entry-server.tsx"
-        )) as { render: () => string };
+        const { render } = (await vite.ssrLoadModule("/src/entry-server.tsx")) as {
+          render: () => string;
+        };
 
         const appHtml = render();
         const template = readFileSync(resolve(root, "dist/index.html"), "utf-8");
@@ -44,4 +42,16 @@ function ssgPlugin(): Plugin {
 
 export default defineConfig({
   plugins: [react(), tailwindcss(), ssgPlugin()],
+  build: {
+    target: "es2020",
+    cssMinify: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ["react", "react-dom"],
+          lucide: ["lucide-react"],
+        },
+      },
+    },
+  },
 });
